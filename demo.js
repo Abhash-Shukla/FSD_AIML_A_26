@@ -3,4 +3,4 @@ let a=10;
 const b=12;
       b=a++;
     console.log("a=",a);
-    console.log("b=",b)
+    console.log("b=",b);
