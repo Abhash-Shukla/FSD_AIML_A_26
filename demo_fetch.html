@@ -19,6 +19,10 @@
       padding: 8px;
       text-align: center;
     }
+    img {
+      max-width: 100px;
+      height: auto;
+    }
   </style>
 </head>
 <body>
@@ -27,6 +31,8 @@
       <tr>
         <th>Sr. No</th>
         <th>Title</th>
+        <th>Image</th>
+        <th>QR Code</th>
         <th>Category</th>
         <th>Price</th>
         <th>Rating</th>
@@ -38,7 +44,7 @@
 
   <script>
     const ele = document.getElementById("data");
-    const URL = "https://dummyjson.com/products?limit=100&skip=5";
+    const URL = "https://dummyjson.com/products?limit=20&skip=5";
 
     async function loadProducts(url) {
       try {
@@ -48,22 +54,33 @@
 
         let rows = "";
         data.products.forEach((item, index) => {
+          // Use thumbnail or fallback image
+          const imgSrc = item.thumbnail || (item.images[0] ?? "https://via.placeholder.com/100?text=No+Image");
+
+          // Generate QR code from product ID
+          const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://dummyjson.com/products/${item.id}`;
+
           rows += `
             <tr>
               <td>${index + 1}</td>
               <td>${item.title}</td>
+              <td><img src="${imgSrc}" alt="Product Image"/></td>
+              <td><img src="${qrURL}" alt="QR Code"/></td>
               <td>${item.category}</td>
-              <td>${item.price}₹</td>
+              <td>${item.price} ₹</td>
               <td>${item.rating}</td>
               <td>${item.stock}</td>
             </tr>
           `;
         });
 
-        ele.innerHTML = rows;
-      } catch (err) {
-        console.error("Error:", err);
-      }
+        ele.innerHTML = (rows === "")
+      ? "<tr><td colspan='6' style='color:red; text-align:center;'>Network Error: Please check your connection</td></tr>"
+      : rows;
+      }catch (err) {
+    console.error("Error:", err);
+    ele.innerHTML = "<tr><td colspan='6' style='color:red; text-align:center;'> Network Error: Please check your connection</td></tr>";
+  }
     }
 
     loadProducts(URL);
