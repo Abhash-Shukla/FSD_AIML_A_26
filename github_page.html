@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub API</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        table {
+            margin-top: 30px;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        img {
+            width: 80px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>GitHub User Details</h1>
+
+    <input 
+        type="text" 
+        id="username" 
+        placeholder="Enter GitHub username"
+    >
+
+    <button onclick="getGithubData()">Search</button>
+
+    <div id="result"></div>
+
+    <script>
+
+        async function getGithubData() {
+
+            const username = document.getElementById("username").value;
+
+            if (username === "") {
+                alert("Enter a username");
+                return;
+            }
+
+            try {
+
+                const response = await fetch(
+                    `https://api.github.com/users/${username}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("User not found");
+                }
+
+                const data = await response.json();
+
+                document.getElementById("result").innerHTML = `
+
+                    <table>
+
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+
+                        <tr>
+                            <td>Avatar</td>
+                            <td>
+                                <img src="${data.avatar_url}">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Username</td>
+                            <td>${data.login}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Name</td>
+                            <td>${data.name || "N/A"}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Bio</td>
+                            <td>${data.bio || "N/A"}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Public Repositories</td>
+                            <td>${data.public_repos}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Followers</td>
+                            <td>${data.followers}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Following</td>
+                            <td>${data.following}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Location</td>
+                            <td>${data.location || "N/A"}</td>
+                        </tr>
+
+                        <tr>
+                            <td>GitHub Profile</td>
+                            <td>
+                                <a href="${data.html_url}" target="_blank">
+                                    Open Profile
+                                </a>
+                            </td>
+                        </tr>
+
+                    </table>
+                `;
+
+            } catch (error) {
+
+                document.getElementById("result").innerHTML =
+                    `<p>${error.message}</p>`;
+
+            }
+        }
+
+    </script>
+
+</body>
+</html>

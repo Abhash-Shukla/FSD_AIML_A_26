@@ -9,7 +9,7 @@
       margin: auto;
       width: 80%;
       padding: 10px;
-      background-color: bisque;
+      /* background-color: bisque; */
       color: #780000;
       border: 2px solid black;
       border-collapse: collapse;
@@ -23,10 +23,16 @@
       max-width: 100px;
       height: auto;
     }
+    table caption {
+      font-weight: bold;
+      font-size: 40px;
+      padding: 10px;
+    }
   </style>
 </head>
 <body>
   <table>
+    <caption>List Of Products</caption>
     <thead>
       <tr>
         <th>Sr. No</th>
@@ -44,13 +50,13 @@
 
   <script>
     const ele = document.getElementById("data");
-    const URL = "https://dummyjson.com/products?limit=20&skip=5";
+    const URL = "https://dummyjson.com/products?limit=100&&skip=80"; // limit give how many items we want to see & skip let us skip ssome products
 
-    async function loadProducts(url) {
+    async function loadProducts(URL) {
       try {
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log("Data =", data.products);
+        const res = await fetch(URL); // to bring data from backend with some extra values
+        const data = await res.json(); // filtering just data 
+        console.log("Data =", data.products); // i only want to see products so data.products
 
         let rows = "";
         data.products.forEach((item, index) => {
@@ -67,7 +73,7 @@
               <td><img src="${imgSrc}" alt="Product Image"/></td>
               <td><img src="${qrURL}" alt="QR Code"/></td>
               <td>${item.category}</td>
-              <td>${item.price} ₹</td>
+              <td>₹${item.price}</td>
               <td>${item.rating}</td>
               <td>${item.stock}</td>
             </tr>
