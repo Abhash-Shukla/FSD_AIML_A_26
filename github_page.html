@@ -1,153 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub API</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-        }
-
-        input, button {
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        table {
-            margin-top: 30px;
-            border-collapse: collapse;
-            width: 600px;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #eee;
-        }
-
-        img {
-            width: 80px;
-            border-radius: 50%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>GitHub Profile Table</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+    th { background-color: #f4f4f4; }
+    img { border-radius: 50%; width: 80px; }
+  </style>
 </head>
-
 <body>
+  <h1>GitHub Profile Viewer</h1>
+  <input type="text" id="username" placeholder="Enter GitHub username">
+  <button onclick="getProfile()">Fetch Profile</button>
 
-    <h1>GitHub User Details</h1>
+  <h2>Profile Info</h2>
+  <table id="profileTable"></table>
 
-    <input 
-        type="text" 
-        id="username" 
-        placeholder="Enter GitHub username"
-    >
+  <h2>Repositories</h2>
+  <table id="repoTable"></table>
 
-    <button onclick="getGithubData()">Search</button>
+  <script>
+    async function getProfile() {
+      const user = document.getElementById('username').value;
 
-    <div id="result"></div>
+      // Fetch profile data
+      const profileRes = await fetch(`https://api.github.com/users/${user}`);
+      const profileData = await profileRes.json();
 
-    <script>
+      // Build profile table
+      document.getElementById('profileTable').innerHTML = `
+        <tr>
+          <th>Avatar</th>
+          <th>Name</th>
+          <th>Bio</th>
+          <th>Followers</th>
+          <th>Following</th>
+          <th>Public Repos</th>
+          <th>Profile Link</th>
+        </tr>
+        <tr>
+          <td><img src="${profileData.avatar_url}" alt="Avatar"></td>
+          <td>${profileData.name || profileData.login}</td>
+          <td>${profileData.bio || "No bio available"}</td>
+          <td>${profileData.followers}</td>
+          <td>${profileData.following}</td>
+          <td>${profileData.public_repos}</td>
+          <td><a href="${profileData.html_url}" target="_blank">Visit</a></td>
+        </tr>
+      `;
 
-        async function getGithubData() {
+      // Fetch repositories
+      const repoRes = await fetch(`https://api.github.com/users/${user}/repos`);
+      const repos = await repoRes.json();
 
-            const username = document.getElementById("username").value;
-
-            if (username === "") {
-                alert("Enter a username");
-                return;
-            }
-
-            try {
-
-                const response = await fetch(
-                    `https://api.github.com/users/${username}`
-                );
-
-                if (!response.ok) {
-                    throw new Error("User not found");
-                }
-
-                const data = await response.json();
-
-                document.getElementById("result").innerHTML = `
-
-                    <table>
-
-                        <tr>
-                            <th>Property</th>
-                            <th>Value</th>
-                        </tr>
-
-                        <tr>
-                            <td>Avatar</td>
-                            <td>
-                                <img src="${data.avatar_url}">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>${data.login}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Name</td>
-                            <td>${data.name || "N/A"}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Bio</td>
-                            <td>${data.bio || "N/A"}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Public Repositories</td>
-                            <td>${data.public_repos}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Followers</td>
-                            <td>${data.followers}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Following</td>
-                            <td>${data.following}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Location</td>
-                            <td>${data.location || "N/A"}</td>
-                        </tr>
-
-                        <tr>
-                            <td>GitHub Profile</td>
-                            <td>
-                                <a href="${data.html_url}" target="_blank">
-                                    Open Profile
-                                </a>
-                            </td>
-                        </tr>
-
-                    </table>
-                `;
-
-            } catch (error) {
-
-                document.getElementById("result").innerHTML =
-                    `<p>${error.message}</p>`;
-
-            }
-        }
-
-    </script>
-
+      // Build repo table
+      let repoTable = `
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Language</th>
+          <th>Stars</th>
+          <th>Link</th>
+        </tr>
+      `;
+      repos.forEach(repo => {
+        repoTable += `
+          <tr>
+            <td>${repo.name}</td>
+            <td>${repo.description || "No description"}</td>
+            <td>${repo.language || "N/A"}</td>
+            <td>${repo.stargazers_count}</td>
+            <td><a href="${repo.html_url}" target="_blank">View Repo</a></td>
+          </tr>
+        `;
+      });
+      document.getElementById('repoTable').innerHTML = repoTable;
+    }
+  </script>
 </body>
 </html>
