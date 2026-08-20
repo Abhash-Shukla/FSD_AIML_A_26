@@ -7,9 +7,26 @@ function Book(props){
     const image=React.createElement("img",{src:props.image,width:"100px",height:"100px"},null);
     const h1=React.createElement("h1",{},"Title:"+props.title);
     const h2=React.createElement("h2",{},"Price:"+props.price);
-    const bt=React.createElement("button",{},"AddToCart");
+    const bt=React.createElement("button",{onClick:()=>addToCart(props)},"AddToCart");
     const div= React.createElement("div",{className: "card"},[image,h1,h2,bt]);
     return div;
+}
+const cart=[];
+function viewCart(){
+    if(cart.length==0){
+        const h2=React.createElement("h2",{},"cart is empty");
+        const parent=ReactDOM.createRoot(document.getElementById("root"));
+        parent.render(h2);
+    }else{
+        const h2=React.createElement("h2",{},"No. of items:"+cart.length);
+        const parent=ReactDOM.createRoot(document.getElementById("root"));
+        parent.render(h2);
+    }
+}
+function addToCart(data){
+    cart.push(data);
+    console.log("data added to cart",data);
+    alert("Book Added Successfully");
 }
 const bookstore =bookdata.map((b)=>(
     Book(b)
