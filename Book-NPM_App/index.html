@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Store</title>
+    <title>Document</title>
     <style>
         .card{
-            width:200px;
-            height:200px;
-            border: 2px solid greenyellow;
+            width:300px;
+            height:300px;
+            background-color: burlywood;
+            border: 2px solid black;
             text-align: center;
-            margin: auto;
+            border-radius: 5%;
             padding:10px;
-            border-radius: 10px;
+            margin: auto;
         }
-        #root{
+        .app{
             display: flex;
+            flex-wrap: wrap;
+            row-gap: 10px;
         }
     </style>
 </head>
 <body>
     <h1><center>Book Store</center></h1>
-    <button onclick="viewCart()">ViewCart</button>
     <div id="root"></div>
-    <div id="cart"></div>
 </body>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="./bookapp.js"></script>
+<script type= "text/babel" src="./index.jsx"></script>
 </html>
