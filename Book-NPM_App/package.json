@@ -1,0 +1,17 @@
+{
+  "name": "book-npm_app",
+  "version": "1.0.0",
+  "description": "my book app",
+  "license": "ISC",
+  "author": "\"Abhash\"",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "babel": "^5.8.38",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}
