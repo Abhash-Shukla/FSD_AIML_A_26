@@ -1,0 +1,33 @@
+.card{
+    width: 400px;
+    height: 400px;
+    background-color: antiquewhite;
+    border: 2px solid red;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card img{
+    margin:5px;
+    padding: 5px;
+    color: red;
+}
+.card h1{
+    margin:5px;
+    padding: 5px;
+    color: red;
+}
+.card h2{
+    margin:5px;
+    padding: 5px;
+    color: red;
+}
+.btn{
+    width: 150 px;
+    height: 50px;
+    background-color: black;
+    border-radius: 50%;
+    color:aliceblue;
+}
