@@ -1,0 +1,18 @@
+.btn{
+    width:100px;
+    height:100px;
+    background-color: black;
+    color: white;
+    font-size: 32px;
+    border-radius: 20px;
+    text-align: center;
+}
+.id1{
+    width:100px;
+    height:100px;
+    background-color: royalblue;
+    color: white;
+    font-size: 32px;
+    border-radius: 20px;
+    text-align: center;
+}
